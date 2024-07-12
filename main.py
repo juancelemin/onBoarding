@@ -23,6 +23,32 @@ def get_db():
     finally:
         db.close()
 
+def trasnform_data(type_data, val):
+
+		if type_data == 'number':
+			val = int(val)
+		elif type_data == 'json':
+			val = json.loads(val)
+		elif type_data == 'boolean':
+			val = bool(val)
+		elif type_data == 'string':
+			val = str(val)
+		elif type_data == 'array':
+			
+			val = json.loads(val)
+			print(val)
+		else:
+			val = str(val)
+		return val
+def deafult_value_db (type_data, val):
+	if type_data in ["array", "json"]:
+		return json.dumps(val)
+	else:
+		return str(val)
+
+
+
+
 
 
 @app.get("/parameters")
@@ -44,7 +70,7 @@ def read_parameters(id: int = Query(None, description="Optional parameter id"), 
            query.all()
 
         formatted_results = [
-            {"parameter_name": row[0], "type_parameter_name": row[1], "value": row[2]}
+            {"parameter_name": row[0], "type_parameter_name": row[1], "value": trasnform_data(row[1], row[2])}
             for row in query
         ]
 
@@ -81,10 +107,13 @@ def add_parameter(parameter_:ParameterBase, db: Session = Depends(get_db)) ->Non
 					models.TypesPerModel.type_parameter_id == type_param.id
 				)
 				type_per_value_param = db.query(models.TypesPerModel).filter(conditions).one()
+				type_per_value_param.Value = deafult_value_db (type_param.name, value['value'])
 			except NoResultFound:
 				type_per_value_param = models.TypesPerModel(parameter_id = find_param_db.id,
 										 type_parameter_id = type_param.id,
-										 Value = str(value['value']))
+										 Value = deafult_value_db (type_param.name, value['value']))
+				
+			finally:
 				db.add(type_per_value_param)
 				db.commit()
 				db.flush()
