@@ -22,7 +22,7 @@ alembic upgrade head
 
 
 #run server
-uvicorn main:app --reload
+fastapi dev main.py
 
 
 
