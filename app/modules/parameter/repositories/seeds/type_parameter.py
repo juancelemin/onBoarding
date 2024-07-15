@@ -3,9 +3,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import IntegrityError
-from models import TypeParameter
+from app.modules.parameter.entities.models import TypeParameter
 from sqlalchemy.orm import Session
-from mysql_database import SessionLocal
+from repositories.db.mysql_database import SessionLocal
 
 
 # Replace 'your_sqlalchemy_module' with the module where your SQLAlchemy Base and TypeParameter class are defined.
