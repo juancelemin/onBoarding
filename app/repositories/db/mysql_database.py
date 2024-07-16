@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker
 class Mysql_connector:
     def __init__(self) -> None:
         # MySQL connection URL
-        SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://root:1234@localhost/prueba"
+        SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:1234@mysql:3306/prueba"
         # Create MySQL database engine
         _engine = create_engine(
             SQLALCHEMY_DATABASE_URL,

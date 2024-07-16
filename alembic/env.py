@@ -2,7 +2,7 @@ from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-import entyties.models as models
+import app.modules.parameter.entities.models as models
 from alembic import context
 
 # this is the Alembic Config object, which provides

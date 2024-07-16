@@ -1,25 +1,26 @@
-version: '3'
+version: '3.8'
+
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
+  mysql:
+    image: mysql:5.7
+    restart: always
     environment:
-      - SQLALCHEMY_DATABASE_URL=mysql+mysqlconnector://root:1234@db/prueba
-  db:
-    image: mysql:8.0
-    environment:
-      MYSQL_DATABASE: 'prueba'
-      MYSQL_USER: 'root'
-      MYSQL_PASSWORD: '1234'
-      MYSQL_ROOT_PASSWORD: '1234'
+      MYSQL_ROOT_PASSWORD: 1234  
+      MYSQL_DATABASE: prueba
     ports:
-      - "3306:3306"
+      - "3307:3306"  
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql           # Mount a named volume for MySQL 
+
+  fastapi-app:
+    build: 
+      context: .
+    container_name: fastapi_app
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - mysql
+
 volumes:
-  mysql_data:
+  mysql-data:   # Named volume for MySQL data
