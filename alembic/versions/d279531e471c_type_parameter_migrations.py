@@ -9,6 +9,7 @@ from typing import Sequence, Union
 
 from alembic import op
 import sqlalchemy as sa
+from app.modules.parameter.entities.models import TypeParameter
 
 
 # revision identifiers, used by Alembic.
@@ -19,6 +20,19 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
+        # Seed initial data
+    initial_data = [
+        {"name": "number"},
+        {"name": "json"},
+        {"name": "boolean"},
+        {"name": "string"},
+        {"name": "array"},
+    ]
+
+    # Insert initial data
+    for entry in initial_data:
+        op.get_bind().execute(TypeParameter.__table__.insert().values(**entry))
+
     pass
 
 
