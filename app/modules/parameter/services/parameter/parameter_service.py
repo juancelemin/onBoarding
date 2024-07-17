@@ -70,13 +70,26 @@ class ParameterService(ParameterInterface):
             .join(models.TypeParameter, models.TypeParameter.id == models.TypesPerModel.type_parameter_id)
         )
         if id is not None:
-            query = query.filter(models.Parameter.id == id).one()
+            query = query.filter(models.Parameter.id == id)
         else:
             query = query.all()
 
-        formatted_results = [
-            {"parameter_name": row[0], "type_parameter_name": row[1], "value": self._get_type_parameter_value(row[1], row[2])}
-            for row in query
-        ]
+        formatted_results = {}
+
+        for row in query:
+            parameter_name = row[0]
+            type_parameter_name = row[1]
+            value = self._get_type_parameter_value(row[1], row[2])
+            
+            if parameter_name in formatted_results:
+                formatted_results[parameter_name].append({
+                    "typeParameter": type_parameter_name,
+                    "value": value
+                })
+            else:
+                formatted_results[parameter_name] = [{
+                    "typeParameter": type_parameter_name,
+                    "values": value
+                }]
 
         return formatted_results
