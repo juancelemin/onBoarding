@@ -1,28 +1,14 @@
-pip3 install virtualenv
+# Onboarding
+# FastAPI Docker Onboarding Guide
 
-in the folder
-python3 -m venv env
-source env/bin/activate
-pip3 install -r requirements.txt
+Welcome to our FastAPI application! Follow these steps to get started quickly:
 
-CREATE A DATABASE IN MAYSQL NAMED prueba
+## Step 1: Build the Docker Image
 
+Build the Docker image for the FastAPI application. Open your terminal and run:
 
-alembic init alembic
-####change this line for you DATABASE configuration in alembic.ini
+```bash
+docker build -t my-fastapi-app .
 
-sqlalchemy.url = mysql+pymysql://root:celemin00@localhost:3306/prueba
-
-
-#in mysql_databse do the same 
-SQLALCHEMY_DATABASE_URL = "mysql+mysqlconnector://root:celemin00@localhost/prueba"
-
-#migrations
-alembic upgrade head
-
-
-#run server
-fastapi dev main.py
-
-
+docker-compose up --build 
 
